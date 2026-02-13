@@ -185,17 +185,6 @@ for (let i = 0; i < 80; i++) {
     document.body.appendChild(star);
 }
 
-// Audio autoplay with muted trick
-const audio = document.getElementById('bgMusic');
-audio.volume = 0.5;
-audio.play().then(() => {
-    setTimeout(() => { audio.muted = false; }, 100);
-}).catch(() => {
-    const unlock = () => { audio.play().then(()=>{ audio.muted = false; }); };
-    document.addEventListener('click', unlock, { once: true });
-    document.addEventListener('keydown', unlock, { once: true });
-});
-
 // Reveal button
 document.getElementById('openBtn').addEventListener('click', () => {
     const card = document.getElementById("card");
