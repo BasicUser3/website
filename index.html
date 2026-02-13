@@ -25,25 +25,17 @@ body {
     background: linear-gradient(-45deg, #0f2027, #1c1c3c, #203a43, #000814);
     background-size: 400% 400%;
     animation: gradientBG 20s ease infinite;
-    transition: background 1s;
+    color: white;
 }
 
-/* Light mode support */
-@media (prefers-color-scheme: light) {
-    body {
-        background: linear-gradient(-45deg, #ffe0b3, #fff4e6, #ffd699, #ffe6cc);
-        color: #333;
-    }
-}
-
-/* Gradient Animation */
+/* Animated Gradient Background */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Stars */
+/* Moving Twinkling Stars */
 .star {
     position: absolute;
     width: 2px;
@@ -71,18 +63,18 @@ body {
     backdrop-filter: blur(14px);
     border-radius: 25px;
     z-index: 2;
+    overflow: hidden;
 }
 
-/* Animated Gold Border */
+/* Animated Geometric Islamic Border */
 .card::before {
     content: "";
     position: absolute;
-    inset: -18px;
-    border-radius: 35px;
+    inset: 0;
+    border-radius: 25px;
     padding: 6px;
-    background: linear-gradient(45deg, gold, #ffd700, #e6b800, gold);
-    background-size: 300% 300%;
-    animation: borderGlow 6s linear infinite;
+    background: conic-gradient(from 0deg, gold, #ffd700, #e6b800, gold, #ffd700);
+    animation: borderRotate 8s linear infinite;
     -webkit-mask:
         linear-gradient(#000 0 0) content-box,
         linear-gradient(#000 0 0);
@@ -91,10 +83,9 @@ body {
     pointer-events: none;
 }
 
-@keyframes borderGlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+@keyframes borderRotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Moon */
@@ -158,11 +149,6 @@ button:hover {
 </head>
 <body>
 
-<!-- Background Nasheed -->
-<audio id="bgMusic" loop>
-    <source src="https://drive.google.com/uc?export=download&id=1gKmbUrMWv6hkroNiijh5ci0rAcsuBoBU" type="audio/mpeg">
-</audio>
-
 <div class="flash" id="flash"></div>
 
 <div class="card" id="card">
@@ -173,43 +159,51 @@ button:hover {
 </div>
 
 <script>
-// Create moving twinkling stars
+// Stars
 for (let i = 0; i < 80; i++) {
-    let star = document.createElement("div");
-    star.classList.add("star");
-    star.style.left = Math.random() * 100 + "vw";
-    star.style.top = Math.random() * 100 + "vh";
-    star.style.animationDuration = (3 + Math.random() * 4) + "s";
-    star.style.animationDelay = Math.random() * 5 + "s";
+    const star = document.createElement('div');
+    star.className = 'star';
+    star.style.left = Math.random()*100 + 'vw';
+    star.style.top = Math.random()*100 + 'vh';
+    star.style.animationDuration = (3 + Math.random()*3) + 's';
+    star.style.animationDelay = Math.random()*5 + 's';
     document.body.appendChild(star);
+}
+
+// Web Audio API for reliable playback
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+let audioBuffer;
+
+fetch('https://drive.google.com/uc?export=download&id=1gKmbUrMWv6hkroNiijh5ci0rAcsuBoBU')
+    .then(response => response.arrayBuffer())
+    .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
+    .then(decoded => {
+        audioBuffer = decoded;
+        playAudioLoop();
+    });
+
+function playAudioLoop() {
+    if (!audioBuffer) return;
+    const source = audioCtx.createBufferSource();
+    source.buffer = audioBuffer;
+    source.connect(audioCtx.destination);
+    source.loop = true;
+    source.start(0);
 }
 
 // Reveal Animation
 function reveal() {
     const card = document.getElementById("card");
     const flash = document.getElementById("flash");
-    const audio = document.getElementById("bgMusic");
 
-    // Play audio reliably
-    audio.play().catch(() => {
-        // If blocked, will play on first interaction
-        document.body.addEventListener("click", () => audio.play(), { once: true });
-    });
-
-    // Animate card and flash
     card.style.transition = "0.8s";
     card.style.transform = "scale(0.8)";
     card.style.opacity = "0";
 
     flash.style.opacity = "1";
 
-    setTimeout(() => {
-        flash.style.opacity = "0";
-    }, 300);
-
-    setTimeout(() => {
-        window.location.href = "ramadan.html";
-    }, 1500);
+    setTimeout(() => { flash.style.opacity = "0"; }, 300);
+    setTimeout(() => { window.location.href = "ramadan.html"; }, 1500);
 }
 </script>
 
