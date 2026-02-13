@@ -179,15 +179,26 @@ for (let i = 0; i < 80; i++) {
     document.body.appendChild(star);
 }
 
-// Audio autoplay with fallback
+// Audio setup
 const audio = document.getElementById('bgMusic');
 audio.volume = 0.5;
-function playAudio() {
+
+// Try to play immediately (some browsers allow autoplay if volume is low)
+function tryPlayAudio() {
     audio.play().catch(() => {
-        document.body.addEventListener('click', () => audio.play(), { once: true });
+        // If autoplay fails, play on first click/keydown
+        const unlockAudio = () => {
+            audio.play().catch(err => console.log("Audio play blocked:", err));
+            document.removeEventListener('click', unlockAudio);
+            document.removeEventListener('keydown', unlockAudio);
+        };
+        document.addEventListener('click', unlockAudio);
+        document.addEventListener('keydown', unlockAudio);
     });
 }
-playAudio();
+
+// Start audio ASAP
+tryPlayAudio();
 
 // Reveal button
 document.getElementById('openBtn').addEventListener('click', () => {
@@ -203,6 +214,7 @@ document.getElementById('openBtn').addEventListener('click', () => {
     setTimeout(()=>{ window.location.href = "ramadan.html"; }, 1500);
 });
 </script>
+
 
 </body>
 </html>
