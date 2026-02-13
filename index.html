@@ -5,7 +5,7 @@
 <title>Ramadan Mubarak</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Elegant Fonts -->
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Amiri&display=swap" rel="stylesheet">
 
 <style>
@@ -28,14 +28,14 @@ body {
     color: white;
 }
 
-/* Animated Gradient Background */
+/* Gradient background animation */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
 
-/* Moving Twinkling Stars */
+/* Stars */
 .star {
     position: absolute;
     width: 2px;
@@ -55,72 +55,64 @@ body {
 /* Card */
 .card {
     position: relative;
-    width: 85%;
-    max-width: 700px;
-    padding: 80px 40px;
+    width: clamp(280px, 85%, 700px);
+    padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px);
     text-align: center;
     background: rgba(255,255,255,0.05);
     backdrop-filter: blur(14px);
-    border-radius: 25px;
+    border-radius: clamp(15px, 5vw, 25px);
     z-index: 2;
-    overflow: hidden;
+    overflow: visible;
 }
 
-/* Animated Geometric Islamic Border */
+/* Glowing border */
 .card::before {
     content: "";
     position: absolute;
-    inset: 0;
-    border-radius: 25px;
-    padding: 6px;
-    background: conic-gradient(from 0deg, gold, #ffd700, #e6b800, gold, #ffd700);
-    animation: borderRotate 8s linear infinite;
-    -webkit-mask:
-        linear-gradient(#000 0 0) content-box,
-        linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-            mask-composite: exclude;
+    top: -0.5em;
+    left: -0.5em;
+    right: -0.5em;
+    bottom: -0.5em;
+    border-radius: inherit;
     pointer-events: none;
+    box-shadow: 0 0 1.2em gold, 0 0 2.4em rgba(255,215,0,0.6), 0 0 3.6em rgba(255,215,0,0.4);
+    animation: glowPulse 2.5s ease-in-out infinite;
 }
 
-@keyframes borderRotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+/* Glow pulse animation */
+@keyframes glowPulse {
+    0%,100% { box-shadow: 0 0 1.2em gold, 0 0 2.4em rgba(255,215,0,0.6), 0 0 3.6em rgba(255,215,0,0.4); }
+    50% { box-shadow: 0 0 2em gold, 0 0 4em rgba(255,215,0,0.6), 0 0 6em rgba(255,215,0,0.3); }
 }
 
 /* Moon */
 .moon {
-    font-size: 50px;
-    margin-bottom: 15px;
+    font-size: clamp(30px, 8vw, 50px);
+    margin-bottom: clamp(10px, 2vw, 15px);
     animation: floatMoon 3s ease-in-out infinite;
-}
-
-@keyframes floatMoon {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
 }
 
 /* Title */
 h1 {
     font-family: 'Cinzel', serif;
-    font-size: 2.8rem;
-    margin-bottom: 15px;
+    font-size: clamp(1.5rem, 5vw, 2.8rem);
+    margin-bottom: clamp(10px, 1.5vw, 15px);
     letter-spacing: 2px;
     color: #ffd700;
-    text-shadow: 0 0 20px rgba(255,215,0,0.7);
+    text-shadow: 0 0 0.6em rgba(255,215,0,0.7);
 }
 
 /* Paragraph */
 p {
-    font-size: 1.2rem;
-    margin-bottom: 30px;
+    font-size: clamp(0.9rem, 3vw, 1.2rem);
+    margin-bottom: clamp(15px, 3vw, 30px);
     opacity: 0.9;
 }
 
 /* Button */
 button {
-    padding: 14px 35px;
-    font-size: 1rem;
+    padding: clamp(10px, 2vw, 14px) clamp(20px, 5vw, 35px);
+    font-size: clamp(0.9rem, 3vw, 1rem);
     border: none;
     border-radius: 50px;
     cursor: pointer;
@@ -135,7 +127,13 @@ button:hover {
     transform: scale(1.08);
 }
 
-/* Flash transition */
+/* Moon float animation */
+@keyframes floatMoon {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Flash */
 .flash {
     position: absolute;
     width: 100%;
@@ -155,8 +153,13 @@ button:hover {
     <div class="moon">🌙</div>
     <h1>Ramadan Special Card</h1>
     <p>A blessed surprise awaits you...</p>
-    <button onclick="reveal()">Open</button>
+    <button id="openBtn">Open</button>
 </div>
+
+<!-- Audio -->
+<audio id="bgMusic" loop>
+    <source src="https://drive.google.com/uc?export=download&id=1gKmbUrMWv6hkroNiijh5ci0rAcsuBoBU" type="audio/mpeg">
+</audio>
 
 <script>
 // Stars
@@ -170,29 +173,18 @@ for (let i = 0; i < 80; i++) {
     document.body.appendChild(star);
 }
 
-// Web Audio API for reliable playback
-const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-let audioBuffer;
-
-fetch('https://drive.google.com/uc?export=download&id=1gKmbUrMWv6hkroNiijh5ci0rAcsuBoBU')
-    .then(response => response.arrayBuffer())
-    .then(arrayBuffer => audioCtx.decodeAudioData(arrayBuffer))
-    .then(decoded => {
-        audioBuffer = decoded;
-        playAudioLoop();
+// Audio autoplay with fallback
+const audio = document.getElementById('bgMusic');
+audio.volume = 0.5;
+function playAudio() {
+    audio.play().catch(() => {
+        document.body.addEventListener('click', () => audio.play(), { once: true });
     });
-
-function playAudioLoop() {
-    if (!audioBuffer) return;
-    const source = audioCtx.createBufferSource();
-    source.buffer = audioBuffer;
-    source.connect(audioCtx.destination);
-    source.loop = true;
-    source.start(0);
 }
+playAudio();
 
-// Reveal Animation
-function reveal() {
+// Reveal button
+document.getElementById('openBtn').addEventListener('click', () => {
     const card = document.getElementById("card");
     const flash = document.getElementById("flash");
 
@@ -201,10 +193,9 @@ function reveal() {
     card.style.opacity = "0";
 
     flash.style.opacity = "1";
-
-    setTimeout(() => { flash.style.opacity = "0"; }, 300);
-    setTimeout(() => { window.location.href = "ramadan.html"; }, 1500);
-}
+    setTimeout(()=>{ flash.style.opacity = "0"; }, 300);
+    setTimeout(()=>{ window.location.href = "ramadan.html"; }, 1500);
+});
 </script>
 
 </body>
