@@ -194,7 +194,22 @@ button:hover {
     <div class="moon">🌙</div>
     <h1>Ramadan Special Card</h1>
     <p>A blessed surprise awaits you...</p>
-    <button id="openBtn">Open</button>
+<button id="openBtn">Open</button>
+
+<script>
+document.getElementById('openBtn').addEventListener('click', () => {
+    const audio = new Audio('RahmatunLilAlameen.mp3');
+    audio.volume = 0.5;
+    audio.currentTime = 6;
+    audio.play().catch(err => console.log('Audio blocked:', err));
+
+    // Slight delay to register the user interaction, then redirect
+    setTimeout(() => {
+        window.location.href = 'ramadan.html';
+    }, 100);
+});
+</script>
+
 </div>
 
 <div id="clickText">- Click anywhere to listen -</div>
