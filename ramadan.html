@@ -57,4 +57,11 @@
     </div>
 
 </body>
+    <audio id="bgMusic" src="RahmatunLilAlameen.mp3" autoplay loop style="display:none"></audio>
+
+<script>
+const audio = document.getElementById("bgMusic");
+audio.volume = 0.5;
+audio.play().catch(err => console.log("Blocked:", err));
+</script
 </html>
