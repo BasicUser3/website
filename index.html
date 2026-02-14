@@ -5,11 +5,9 @@
 <title>Ramadan Mubarak</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Amiri&display=swap" rel="stylesheet">
 
 <style>
-/* Force dark mode colors */
 html, body {
     background: linear-gradient(-45deg, #0f2027, #1c1c3c, #203a43, #000814);
     color: white;
@@ -30,12 +28,13 @@ body {
     font-family: 'Amiri', serif;
 }
 
-/* Gradient background animation */
+/* Background animation */
 @keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
 }
+
 body {
     background-size: 400% 400%;
     animation: gradientBG 20s ease infinite;
@@ -64,14 +63,13 @@ body {
     width: clamp(280px, 85%, 700px);
     padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px);
     text-align: center;
-    background: rgba(255,255,255,0.05); /* subtle dark card */
+    background: rgba(255,255,255,0.05);
     backdrop-filter: blur(14px);
     border-radius: clamp(15px, 5vw, 25px);
     z-index: 2;
-    overflow: visible;
 }
 
-/* Glowing border */
+/* Glow */
 .card::before {
     content: "";
     position: absolute;
@@ -85,7 +83,6 @@ body {
     animation: glowPulse 2.5s ease-in-out infinite;
 }
 
-/* Glow pulse animation */
 @keyframes glowPulse {
     0%,100% { box-shadow: 0 0 1.2em gold, 0 0 2.4em rgba(255,215,0,0.6), 0 0 3.6em rgba(255,215,0,0.4); }
     50% { box-shadow: 0 0 2em gold, 0 0 4em rgba(255,215,0,0.6), 0 0 6em rgba(255,215,0,0.3); }
@@ -94,49 +91,43 @@ body {
 /* Moon */
 .moon {
     font-size: clamp(30px, 8vw, 50px);
-    margin-bottom: clamp(10px, 2vw, 15px);
+    margin-bottom: 15px;
     animation: floatMoon 3s ease-in-out infinite;
 }
 
-/* Title */
+@keyframes floatMoon {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
 h1 {
     font-family: 'Cinzel', serif;
     font-size: clamp(1.5rem, 5vw, 2.8rem);
-    margin-bottom: clamp(10px, 1.5vw, 15px);
+    margin-bottom: 15px;
     letter-spacing: 2px;
     color: #ffd700;
-    text-shadow: 0 0 0.6em rgba(255,215,0,0.7);
 }
 
-/* Paragraph */
 p {
     font-size: clamp(0.9rem, 3vw, 1.2rem);
-    margin-bottom: clamp(15px, 3vw, 30px);
+    margin-bottom: 30px;
     opacity: 0.9;
 }
 
 /* Button */
 button {
-    padding: clamp(10px, 2vw, 14px) clamp(20px, 5vw, 35px);
-    font-size: clamp(0.9rem, 3vw, 1rem);
+    padding: 12px 30px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     background: linear-gradient(45deg, #ffd200, #f7971e);
-    color: #333;
     font-weight: bold;
     transition: 0.3s ease;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.4);
+    color: #000000; /* Open text black */
 }
 
 button:hover {
     transform: scale(1.08);
-}
-
-/* Moon float animation */
-@keyframes floatMoon {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
 }
 
 /* Flash */
@@ -148,6 +139,24 @@ button:hover {
     opacity: 0;
     pointer-events: none;
     transition: opacity 0.5s ease;
+}
+
+/* Bottom flashing text */
+#clickText {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    font-size: 1rem;
+    color: #ffffff; /* White bottom text */
+    font-weight: bold;
+    animation: blink 1s infinite;
+    z-index: 5;
+}
+
+@keyframes blink {
+    0%,100% { opacity: 1; }
+    50% { opacity: 0; }
 }
 </style>
 </head>
@@ -162,14 +171,19 @@ button:hover {
     <button id="openBtn">Open</button>
 </div>
 
-<audio id="bgMusic" src="RahmatunLilAlameen.mp3" autoplay loop style="display:none" type="audio/mpeg"></audio>
+<div id="clickText">Click anywhere to listen</div>
+
+<audio id="bgMusic" src="RahmatunLilAlameen.mp3" loop style="display:none"></audio>
 
 <script>
 const audio = document.getElementById("bgMusic");
 audio.volume = 0.5;
 
+// Start music 6 seconds in on first click
 document.addEventListener("click", () => {
+    audio.currentTime = 6;
     audio.play();
+    document.getElementById("clickText").style.display = "none";
 }, { once: true });
 </script>
 
