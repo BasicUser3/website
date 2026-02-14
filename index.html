@@ -26,6 +26,7 @@ body {
     align-items: center;
     overflow: hidden;
     font-family: 'Amiri', serif;
+    text-align: center;
 }
 
 /* Background animation */
@@ -93,6 +94,7 @@ body {
     font-size: clamp(30px, 8vw, 50px);
     margin-bottom: 15px;
     animation: floatMoon 3s ease-in-out infinite;
+    text-shadow: 0 0 0.6em #ffd700, 0 0 1.2em #ffd700;
 }
 
 @keyframes floatMoon {
@@ -106,15 +108,16 @@ h1 {
     margin-bottom: 15px;
     letter-spacing: 2px;
     color: #ffd700;
+    text-shadow: 0 0 0.8em #ffd700, 0 0 1.5em #ffd700, 0 0 2em #ffd700;
 }
 
 p {
     font-size: clamp(0.9rem, 3vw, 1.2rem);
     margin-bottom: 30px;
     opacity: 0.9;
+    text-shadow: 0 0 0.4em #ffffff, 0 0 0.8em #ffffff;
 }
 
-/* Button */
 button {
     padding: 12px 30px;
     border: none;
@@ -123,7 +126,8 @@ button {
     background: linear-gradient(45deg, #ffd200, #f7971e);
     font-weight: bold;
     transition: 0.3s ease;
-    color: #000000; /* Open text black */
+    color: #000000;
+    text-shadow: 0 0 0.6em #ffd700, 0 0 1em #ffd200;
 }
 
 button:hover {
@@ -148,10 +152,11 @@ button:hover {
     width: 100%;
     text-align: center;
     font-size: 1rem;
-    color: #ffffff; /* White bottom text */
+    color: #ffffff;
     font-weight: bold;
     animation: blink 1s infinite;
     z-index: 5;
+    text-shadow: 0 0 0.6em #ffffff, 0 0 1.2em #ffffff;
 }
 
 @keyframes blink {
