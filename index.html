@@ -162,8 +162,16 @@ button:hover {
     <button id="openBtn">Open</button>
 </div>
 
-<!-- Audio: simple autoplay and hidden -->
-<audio src="https://basicuser3.github.io/website/RahmatunLilAlameen.mp3" autoplay loop style="display:none"></audio>
+<audio id="bgMusic" src="RahmatunLilAlameen.mp3" loop style="display:none"></audio>
+
+<script>
+const audio = document.getElementById("bgMusic");
+audio.volume = 0.5;
+
+document.addEventListener("click", () => {
+    audio.play();
+}, { once: true });
+</script>
 
 <script>
 // Stars
