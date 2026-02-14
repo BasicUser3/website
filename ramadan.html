@@ -5,51 +5,50 @@
 <title>Ramadan Mubarak</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Amiri&display=swap" rel="stylesheet">
+
 <style>
-* {
+html, body {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: radial-gradient(circle at top, #1c1c3c, #000814);
-    color: gold;
-    text-align: center;
+    height: 100%;
     overflow: hidden;
+    font-family: 'Amiri', serif;
+    text-align: center;
+    background: linear-gradient(-45deg, #0f2027, #1c1c3c, #203a43, #000814);
+    background-size: 400% 400%;
+    animation: gradientBG 20s ease infinite;
+    color: white;
     position: relative;
     opacity: 0;
-    animation: fadeIn 2s ease forwards;
+    animation: fadeInBody 2s ease forwards;
 }
 
-/* Fade-in animation */
-@keyframes fadeIn {
+/* Fade in body */
+@keyframes fadeInBody {
     to { opacity: 1; }
 }
 
-/* Aurora background */
-body::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(-45deg, rgba(128,0,128,0.2), rgba(0,0,128,0.2), rgba(0,0,0,0.5));
-    background-size: 400% 400%;
-    animation: aurora 20s ease infinite;
-    z-index: 0;
-}
-
-@keyframes aurora {
+@keyframes gradientBG {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+/* Aurora overlay */
+body::before {
+    content:"";
+    position:absolute;
+    top:0; left:0; width:100%; height:100%;
+    background: linear-gradient(135deg, rgba(128,0,128,0.15), rgba(0,0,128,0.15), rgba(0,0,0,0.5));
+    background-size:400% 400%;
+    animation: aurora 30s ease infinite;
+    z-index:0;
+}
+@keyframes aurora {
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
 }
 
 /* Stars */
@@ -61,95 +60,121 @@ body::before {
     border-radius: 50%;
     opacity: 0.8;
     animation: twinkle linear infinite;
-    z-index: 1;
+    z-index:1;
 }
-
 @keyframes twinkle {
-    0% { opacity: 0.2; transform: translateY(0) scale(1); }
-    50% { opacity: 1; transform: translateY(-30px) scale(1.3); }
-    100% { opacity: 0.2; transform: translateY(0) scale(1); }
+    0% {opacity:0.2; transform: translateY(0) scale(1);}
+    50%{opacity:1; transform: translateY(-30px) scale(1.3);}
+    100%{opacity:0.2; transform: translateY(0) scale(1);}
 }
 
-/* Content */
-.content {
-    animation: glow 2s ease-in-out infinite alternate;
-    z-index: 2;
+/* Card */
+.card {
     position: relative;
-    opacity: 0;
+    z-index:2;
+    width: clamp(280px, 85%, 700px);
+    padding: clamp(40px, 8vw, 80px) clamp(20px, 5vw, 40px);
+    text-align:center;
+    background: rgba(255,255,255,0.05);
+    backdrop-filter: blur(14px);
+    border-radius: clamp(15px,5vw,25px);
+    overflow: visible;
     animation: fadeInContent 2s ease forwards 0.5s;
 }
-
 @keyframes fadeInContent {
-    to { opacity: 1; }
+    to {opacity:1;}
 }
 
+/* Glowing card border */
+.card::before {
+    content:"";
+    position:absolute;
+    top:-6px; left:-6px; right:-6px; bottom:-6px;
+    border-radius: inherit;
+    pointer-events: none;
+    box-shadow:0 0 1.2em gold,0 0 2.4em rgba(255,215,0,0.6),0 0 3.6em rgba(255,215,0,0.4);
+    animation: glowPulse 2.5s ease-in-out infinite;
+}
+@keyframes glowPulse {
+    0%,100%{box-shadow:0 0 1.2em gold,0 0 2.4em rgba(255,215,0,0.6),0 0 3.6em rgba(255,215,0,0.4);}
+    50%{box-shadow:0 0 2em gold,0 0 4em rgba(255,215,0,0.6),0 0 6em rgba(255,215,0,0.3);}
+}
+
+/* Heading glow */
 h1 {
-    font-size: 3rem;
-    letter-spacing: 3px;
+    font-family: 'Cinzel', serif;
+    font-size: clamp(1.5rem,5vw,2.8rem);
+    color:#ffd700;
     text-shadow:
-        0 0 2px gold,
-        0 0 4px gold,
-        0 0 6px gold;
+        0 0 1px #ffd700,
+        0 0 2px #ffd700,
+        0 0 3px #ffd700,
+        0 0 4px #ffd700;
+    margin-bottom: 15px;
 }
 
+/* Paragraph glow */
 p {
-    margin-top: 15px;
-    font-size: 1.2rem;
-    color: #f5d76e;
+    font-size: clamp(0.9rem,3vw,1.2rem);
+    color:#ffffff;
     text-shadow:
-        0 0 1px #f5d76e,
-        0 0 2px #f5d76e,
-        0 0 3px #f5d76e;
+        0 0 1px #ffffff,
+        0 0 2px #ffffff,
+        0 0 3px #ffffff,
+        0 0 4px #ffffff;
+    margin-bottom:30px;
 }
 
-@keyframes glow {
-    from { text-shadow: 0 0 10px gold, 0 0 20px #ffcc00; }
-    to { text-shadow: 0 0 20px #ffd700, 0 0 40px #ffaa00; }
+/* Bottom click text */
+#clickText {
+    position: fixed;
+    bottom:20px;
+    width:100%;
+    text-align:center;
+    font-size:1rem;
+    color:#ffffff;
+    font-weight:bold;
+    z-index:5;
+    text-shadow:0 0 1px #ffffff,0 0 2px #ffffff,0 0 3px #ffffff;
+    animation: blink 1s infinite;
+}
+@keyframes blink {
+    0%,100%{opacity:1;}
+    50%{opacity:0;}
 }
 </style>
 </head>
 <body>
 
-<div class="content">
-    <h1>Ramadan Mubarak</h1>
-    <p>May this holy month bring peace, happiness, and prosperity to you and your family.</p>
+<div class="card">
+    <h1>Ramadan Special Card</h1>
+    <p>A blessed surprise awaits you...</p>
 </div>
 
-<!-- Audio -->
+<div id="clickText">- Click anywhere to listen -</div>
+
 <audio id="bgMusic" src="RahmatunLilAlameen.mp3" loop style="display:none"></audio>
 
 <script>
 // Stars
-for (let i = 0; i < 80; i++) {
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random() * 100 + 'vw';
-    star.style.top = Math.random() * 100 + 'vh';
-    star.style.animationDuration = (2 + Math.random() * 3) + 's';
-    star.style.animationDelay = Math.random() * 5 + 's';
+for(let i=0;i<80;i++){
+    const star=document.createElement('div');
+    star.className='star';
+    star.style.left=Math.random()*100+'vw';
+    star.style.top=Math.random()*100+'vh';
+    star.style.animationDuration=(2+Math.random()*3)+'s';
+    star.style.animationDelay=Math.random()*5+'s';
     document.body.appendChild(star);
 }
 
-// Audio setup
-const audio = document.getElementById("bgMusic");
-audio.volume = 0.5;
-
-// Check if the audio is already playing from previous page
-if (window.sharedAudio) {
-    // Continue playing the previous audio
-    window.sharedAudio.loop = true;
-    audio.src = window.sharedAudio.src;
-    audio.currentTime = window.sharedAudio.currentTime;
-    audio.play().catch(err => console.log("Audio blocked:", err));
-} else {
-    // Fallback: play on first click
-    const unlockAudio = () => {
-        audio.currentTime = 6;
-        audio.play().catch(err => console.log("Audio blocked:", err));
-        document.removeEventListener('click', unlockAudio);
-    };
-    document.addEventListener('click', unlockAudio);
-}
+// Audio on first click
+const audio=document.getElementById('bgMusic');
+audio.volume=0.5;
+document.addEventListener('click',()=>{
+    audio.currentTime=6;
+    audio.play().catch(err=>console.log('Audio blocked:',err));
+    document.getElementById('clickText').style.display='none';
+},{once:true});
 </script>
 
 </body>
